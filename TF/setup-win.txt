@@ -1,0 +1,7 @@
+python -m venv venv
+.\venv\Scripts\activate
+pip install --upgrade pip
+pip install -r requirements-win.txt
+
+# $env:PYTHONPATH += ":\path\to\models"
+# CUDA 11.2 CUDNN 8.1.1
