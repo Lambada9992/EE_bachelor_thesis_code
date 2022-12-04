@@ -1,0 +1,21 @@
+Pycharm WSL Env variables
+LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda-11.2/lib64;PYTHONPATH=/home/marcin/dev/models;PYTHONUNBUFFERED=1;PATH=/usr/local/cuda-11.2/bin
+
+WSL ENV Variables
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# CUDA
+export PATH="$PATH:/usr/local/cuda-11.2/bin"
+export LD_LIBRARY_PATH="/usr/local/cuda-11.2/lib64:$LD_LIBRARY_PATH"
+
+# CUDNN
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/include:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
+
+# TensorFlow models
+export PYTHONPATH="$PYTHONPATH:$HOME/dev/models"
