@@ -1,7 +1,18 @@
-Pycharm WSL Env variables
+PYCHARM WSL ENV VARIABLES
 LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/cuda/include:/usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda-11.2/lib64;PYTHONPATH=/home/marcin/dev/models;PYTHONUNBUFFERED=1;PATH=/usr/local/cuda-11.2/bin
 
-WSL ENV Variables
+
+CUDA & CUDNN
+CUDA 11.2 
+CUDNN 8.1
+https://www.youtube.com/watch?v=Hq8ocpy3l5w&ab_channel=DineshDhotrad
+
+TENSORFLOW MODELS GITHUB
+commit sha:
+e1063afbf9b2c88ff757ed9865f2ba436cfa02bc
+
+
+WSL ENV VARIABLES
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
