@@ -1,4 +1,4 @@
-package com.example.thesisapp
+package com.github.lambada9992
 
 import org.junit.Test
 
