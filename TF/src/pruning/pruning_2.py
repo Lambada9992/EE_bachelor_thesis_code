@@ -1,58 +1,48 @@
+# import necessary packages and then download from tensorflow hub the MobileNetV2 model and load it into a Keras model and then prune it on a coco 2017 dataset and then save the model to h5 format
+
 import tensorflow as tf
-import tensorflow_hub as hub
-import tensorflow_model_optimization as tfom
+import tensorflow_model_optimization as tfmo
 import tensorflow_datasets as tfds
+import tensorflow_hub as hub
 
-# Load the CIFAR-10 dataset
-dataset_name = 'cifar10'
-dataset = tfds.load(name=dataset_name, split='train[:80%]', as_supervised=True)
-
+# load the coco 2017 dataset
+dataset_name = 'coco/2017'
+dataset = tfds.load(name=dataset_name, split='train[:80%]')
 # Split the dataset into train and validation sets
 num_train_examples = int(0.8 * tf.data.experimental.cardinality(dataset).numpy())
 train_dataset = dataset.take(num_train_examples)
 val_dataset = dataset.skip(num_train_examples)
 
+# load the MobileNetV2 model from tensorflow hub
+model = tf.keras.Sequential([
+    hub.KerasLayer("https://tfhub.dev/google/imagenet/mobilenet_v2_100_224/feature_vector/4",
+                     trainable=False),  # Can be True, see below.
+    tf.keras.layers.Dense(1000, activation='softmax')
+])
+model.build([None, 224, 224, 3])  # Batch input shape.
 
-# Define preprocessing functions for the datasets
-def preprocess_image(image, label):
-    # Cast the image to float32 and normalize its values to the [0, 1] range
-    image = tf.cast(image, tf.float32) / 255.0
-
-    # Resize the image to the input shape of the MobileNet V2 model
-    image = tf.image.resize(image, (224, 224))
-
-    return image, label
-
-
-# Preprocess the train and validation datasets
-train_dataset = train_dataset.map(preprocess_image).shuffle(1000).batch(32)
-val_dataset = val_dataset.map(preprocess_image).batch(32)
-
-# Load the MobileNet V2 model from TensorFlow Hub
-model = hub.KerasLayer("https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/4")
-
-# Define a sparsity schedule for pruning
-pruning_params = {
-    "pruning_schedule": tfom.sparsity.keras.PolynomialDecay(
-        initial_sparsity=0.30, final_sparsity=0.90, begin_step=0, end_step=1000
-    )
-}
-
-# Create a pruned model
-pruned_model = tfom.sparsity.keras.prune_low_magnitude(model, **pruning_params)
-
-# Compile the pruned model
-pruned_model.compile(
-    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-    optimizer=tf.keras.optimizers.Adam(),
-    metrics=["accuracy"],
+# prune the model
+pruning_schedule = tfmo.sparsity.keras.PolynomialDecay(
+    initial_sparsity=0.0,
+    final_sparsity=0.5,
+    begin_step=2000,
+    end_step=4000
 )
 
-# Train the pruned model
-pruned_model.fit(train_dataset, epochs=10, validation_data=val_dataset)
+model_for_pruning = tfmo.sparsity.keras.prune_low_magnitude(
+    model,
+    pruning_schedule
+)
 
-# Strip pruning wrappers from the pruned model to reduce its size
-stripped_model = tfom.sparsity.keras.strip_pruning(pruned_model)
+model_for_pruning.compile(
+    optimizer='adam',
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    metrics=['accuracy']
+)
 
-# Save the pruned model to disk
-tf.keras.models.save_model(stripped_model, "pruned_mobilenet_v2")
+model_for_pruning.fit(train_dataset, epochs=10, validation_data=val_dataset)
+
+model_for_pruning.summary()
+
+# save the model to h5 format
+model_for_pruning.save('mobilenetv2_pruned.h5')
