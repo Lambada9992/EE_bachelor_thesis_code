@@ -16,7 +16,7 @@ fun InferenceVisualization() {
         drawRect(
             color = Color.Blue,
             size = Size(600f, 250f),
-            topLeft = Offset(100f, 100f),
+            topLeft = Offset(100f, 700f),
             style = Stroke(8.dp.toPx())
         )
     }
