@@ -27,7 +27,7 @@ class TensorflowObjectDetectionModel(
 
 
     override fun initialize(context: Context) {
-        if (interpreter != null) {
+        if (interpreter == null) {
             interpreter = Interpreter(FileUtil.loadMappedFile(context, path), interpreterOptions)
         }
     }

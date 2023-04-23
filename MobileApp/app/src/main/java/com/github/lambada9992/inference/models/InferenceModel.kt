@@ -17,5 +17,5 @@ data class ObjectDetectionResult(
 ): InferenceResult()
 
 data class ClassificationResult(
-    val x: String
+    val name: String
 ): InferenceResult()
