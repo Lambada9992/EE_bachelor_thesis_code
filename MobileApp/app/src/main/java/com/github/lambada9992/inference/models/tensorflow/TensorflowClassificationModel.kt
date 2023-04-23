@@ -25,7 +25,7 @@ class TensorflowClassificationModel(
     private var interpreter: Interpreter? = null
 
     override fun initialize(context: Context) {
-        if (interpreter != null) {
+        if (interpreter == null) {
             interpreter = Interpreter(FileUtil.loadMappedFile(context, path), interpreterOptions)
         }
     }
@@ -43,7 +43,7 @@ class TensorflowClassificationModel(
             TensorBuffer.createFixedSize(intArrayOf(1, numberOfClasses), DataType.FLOAT32)
 
         val outputs = mapOf(
-            0 to classification
+            0 to classification.buffer
         )
 
         val tensorImage = TensorImage.fromBitmap(image).let { inputImageProcessor.process(it) }
