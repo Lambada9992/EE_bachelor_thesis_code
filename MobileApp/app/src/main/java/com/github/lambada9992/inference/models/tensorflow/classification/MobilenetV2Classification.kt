@@ -1,3 +1,4 @@
+/*
 package com.github.lambada9992.inference.models.tensorflow.classification
 
 import android.content.Context
@@ -32,3 +33,4 @@ class MobilenetV2Classification : InferenceModel() {
         return null
     }
 }
+*/

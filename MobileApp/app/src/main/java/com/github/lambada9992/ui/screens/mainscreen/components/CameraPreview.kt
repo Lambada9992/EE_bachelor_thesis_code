@@ -1,4 +1,4 @@
-package com.github.lambada9992.ui.screens.mainscreen.camerapreview
+package com.github.lambada9992.ui.screens.mainscreen.components
 
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +13,8 @@ fun CameraPreview(
     previewView: PreviewView,
     cameraPermissionGranted: Boolean,
     onPermissionRequest: () -> Unit
-){
-    if (cameraPermissionGranted){
+) {
+    if (cameraPermissionGranted) {
         AndroidView(factory = { previewView }, modifier = Modifier.fillMaxSize())
     } else {
         Button(onClick = { onPermissionRequest() }) {

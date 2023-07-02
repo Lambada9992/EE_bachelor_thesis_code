@@ -9,17 +9,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.github.lambada9992.inference.InferenceService
-
 import com.github.lambada9992.statistic.StatisticsInfo
 import com.github.lambada9992.statistic.StatisticsService
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 
 @Composable
-fun InferenceStats(inferenceService: InferenceService, statisticsService: StatisticsService){
+fun InferenceStats(inferenceService: InferenceService, statisticsService: StatisticsService) {
     var statsToDisplay by remember { mutableStateOf<StatisticsInfo?>(null) }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         while (true) {
             delay(1.seconds)
             val modelName = inferenceService.selectedInferenceModel?.name
@@ -30,7 +29,7 @@ fun InferenceStats(inferenceService: InferenceService, statisticsService: Statis
     }
 
     Column() {
-        Text("avg: ${statsToDisplay?.avg?.toInt()?.let { it/1000.0 } ?: ""}")
+        Text("avg: ${statsToDisplay?.avg ?: ""}")
         Text("median: ${statsToDisplay?.median ?: ""}")
         Text("max: ${statsToDisplay?.max ?: ""}")
         Text("min: ${statsToDisplay?.min ?: ""}")
