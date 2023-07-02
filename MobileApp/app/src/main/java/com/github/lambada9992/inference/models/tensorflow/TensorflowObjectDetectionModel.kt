@@ -25,7 +25,6 @@ class TensorflowObjectDetectionModel(
 ) : InferenceModel() {
     private var interpreter: Interpreter? = null
 
-
     override fun initialize(context: Context) {
         if (interpreter == null) {
             interpreter = Interpreter(FileUtil.loadMappedFile(context, path), interpreterOptions)

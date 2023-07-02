@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 class StatisticsModule {
 
     @Provides
-    fun statisticsService(): StatisticsService{
+    fun statisticsService(): StatisticsService {
         return StatisticsService()
     }
 }

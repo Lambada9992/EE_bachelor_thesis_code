@@ -14,54 +14,76 @@ import org.pytorch.Module
 import org.pytorch.Tensor
 import org.pytorch.torchvision.TensorImageUtils
 
-
 class PytorchClassificationModel(
     override val name: String,
+    private val path: String,
+    private val imageSize: Int,
     private val classes: Array<String> = CLASSES.IMAGE_NET,
     private val device: Device = Device.CPU
 ) : InferenceModel() {
     private var module: Module? = null
+    private val lock = Any()
+    private var errorMessage: String? = null
     override fun initialize(context: Context) {
-        if (module == null) {
-            module = LiteModuleLoader.loadModuleFromAsset(context.assets, "model.ptl", device)
+        synchronized(lock) {
+            Log.i("PytorchClassificationModel", "Initialing model name: $name")
+            if (module == null) {
+//                LiteModuleLoader.load()
+//                module = LiteModuleLoader.loadModuleFromAsset(context.assets, path, device)
+                try {
+
+                    module = LiteModuleLoader.load(path)
+                } catch (e: Exception) {
+                    errorMessage = e.message
+                }
+            }
         }
     }
 
     override fun close() {
-        module = module?.let {
-            it.destroy()
-            null
+        synchronized(lock) {
+            errorMessage?.let { Log.e("PytorchClassificationModel", "Failed to initialize model: $it") }
+            Log.i("PytorchClassificationModel", "Closing model name: $name")
+            module = module?.let {
+                it.destroy()
+                null
+            }
         }
     }
 
     override fun runInference(image: Bitmap): InferenceResult? {
-        val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
-            image,
-            TensorImageUtils.TORCHVISION_NORM_MEAN_RGB,
-            TensorImageUtils.TORCHVISION_NORM_STD_RGB
-        )
+        return synchronized(lock) {
+            val imageResized = Bitmap.createScaledBitmap(image, imageSize, imageSize, true)
+            val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
+                imageResized,
+                TensorImageUtils.TORCHVISION_NORM_MEAN_RGB,
+                TensorImageUtils.TORCHVISION_NORM_STD_RGB
+            )
 
-        val outputTensor: Tensor = try {
-            module!!.forward(IValue.from(inputTensor)).toTensor()
-        } catch (e: Exception){
-            Log.e("PytorchClassificationModel", "Failed to inference")
-            return null
-        }
-        val scores: FloatArray = outputTensor.dataAsFloatArray
+            inputTensor.shape()
 
-        var maxScore = -Float.MAX_VALUE
-        var maxScoreIdx = -1
-        for (i in scores.indices) {
-            if (scores[i] > maxScore) {
-                maxScore = scores[i]
-                maxScoreIdx = i
+            val outputTensor: Tensor = try {
+                module!!.forward(IValue.from(inputTensor)).toTensor()
+            } catch (e: Exception) {
+                Log.e("PytorchClassificationModel", "Failed to inference")
+                return null
             }
-        }
+            val scores: FloatArray = outputTensor.dataAsFloatArray
 
-        return try {
-            ClassificationResult(name = classes[maxScoreIdx])
-        } catch (e: Exception) {
-            null
+            var maxScore = -Float.MAX_VALUE
+            var maxScoreIdx = -1
+            for (i in scores.indices) {
+                if (scores[i] > maxScore) {
+                    maxScore = scores[i]
+                    maxScoreIdx = i
+                }
+            }
+
+            try {
+                ClassificationResult(name = classes[maxScoreIdx])
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }

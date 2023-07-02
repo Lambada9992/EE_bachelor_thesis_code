@@ -10,5 +10,4 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     val inferenceService: InferenceService,
     val statisticsService: StatisticsService
-): ViewModel() {
-}
+) : ViewModel()
