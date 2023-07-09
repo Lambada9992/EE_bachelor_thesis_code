@@ -25,8 +25,6 @@ models = [
     {"name":"resnet101","model": torchvision.models.resnet101(weights="IMAGENET1K_V1"), "imagesize":224, "transform": torchvision.models.ResNet101_Weights.IMAGENET1K_V1.transforms()},
     {"name":"resnet152","model": torchvision.models.resnet152(weights="IMAGENET1K_V1"), "imagesize":224, "transform": torchvision.models.ResNet152_Weights.IMAGENET1K_V1.transforms()},
     {"name":"resnet50","model": torchvision.models.resnet50(weights="IMAGENET1K_V1"), "imagesize":224, "transform": torchvision.models.ResNet50_Weights.IMAGENET1K_V1.transforms()},
-    {"name":"vgg16","model": torchvision.models.vgg16(weights="IMAGENET1K_V1"), "imagesize":224, "transform": torchvision.models.VGG16_Weights.IMAGENET1K_V1.transforms()},
-    {"name":"vgg19","model": torchvision.models.vgg19(weights="IMAGENET1K_V1"), "imagesize":224, "transform":  torchvision.models.VGG19_Weights.IMAGENET1K_V1.transforms()},
 ]
 
 
@@ -95,9 +93,5 @@ for data in models:
         for quantization_mode in QuantizeMode:
             for sparse_value in [None, 0.1, 0.2, 0.3, 0.4, 0.5]:
                 process_model(name, model, imagesize, train_data, val_data, sparse=sparse_value, quantization=quantization_mode)
-
-
-        pass
     except Exception as e:
         print(f"Error in {data['name']}: {e}")
-        # raise e

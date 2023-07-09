@@ -19,9 +19,6 @@ def eval_tflite_model(
         model_path: str,
         val_ds,
 ):
-    """create interpreter with gpu delegate"""
-
-
     interpreter = tf.lite.Interpreter(
         model_path=model_path,
         num_threads=20,
@@ -34,21 +31,6 @@ def eval_tflite_model(
 
     accuracy = 0
     size = 0
-
-    # pool = ThreadPoolExecutor(20)
-    # results = []
-    # def eval_batch(batch, interpreter, input_details, output_details):
-    #     interpreter.set_tensor(input_details[0]['index'], batch[0].numpy())
-    #     interpreter.invoke()
-    #     output = interpreter.get_tensor(output_details[0]['index'])
-    #     return np.sum(np.argmax(output, axis=1) == batch[1].numpy())
-    #
-    # for batch in ds:
-    #     results.append(pool.submit(eval_batch, batch, interpreter, input_details, output_details))
-    #
-    # for future in as_completed(results):
-    #     accuracy += future.result()
-    #     size += 1
 
     for batch in ds:
         interpreter.set_tensor(input_details[0]['index'], batch[0].numpy())
