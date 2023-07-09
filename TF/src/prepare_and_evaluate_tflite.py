@@ -111,21 +111,6 @@ prunable_models = [
         tf.keras.optimizers.SGD(),
         (224, 224)
     ),
-    (
-        'VGG16',
-        tf.keras.applications.VGG16(input_shape=(224, 224, 3)),
-        tf.keras.applications.vgg16.preprocess_input,
-        tf.keras.optimizers.SGD(),
-
-        (224, 224)
-    ),
-    (
-        'VGG19',
-        tf.keras.applications.VGG19(input_shape=(224, 224, 3)),
-        tf.keras.applications.vgg19.preprocess_input,
-        tf.keras.optimizers.SGD(),
-        (224, 224)
-    ),
 ]
 
 def process_model(
@@ -345,4 +330,3 @@ for name, model, preprocess_image, optimizer, shape in prunable_models:
         print("Failed to process model: " + name)
         print(f"ERROR: {e}")
         continue
-        # raise e

@@ -95,9 +95,5 @@ for data in models:
         for quantization_mode in QuantizeMode:
             for sparse_value in [None, 0.1, 0.2, 0.3, 0.4, 0.5]:
                 process_model(name, model, imagesize, train_data, val_data, sparse=sparse_value, quantization=quantization_mode)
-
-
-        pass
     except Exception as e:
         print(f"Error in {data['name']}: {e}")
-        # raise e
