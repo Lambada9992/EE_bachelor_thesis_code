@@ -37,13 +37,11 @@ class TensorflowClassificationModel(
                 try {
                     val file = File(path)
                     val fileIS = FileInputStream(file)
-
                     val fileBB = fileIS.channel.map(FileChannel.MapMode.READ_ONLY, 0, file.length())
                     interpreter = Interpreter(fileBB, interpreterOptions)
                 } catch (e: Exception) {
                     errorMessage = e.message
                 }
-//                interpreter = Interpreter(FileUtil.loadMappedFile(context, path), interpreterOptions)
             }
         }
     }

@@ -103,7 +103,11 @@ fun MainScreen() {
 }
 
 fun String.prepareFileName(): String {
-    return this.replace("s:", "").replace("q:", "").replace("PT:", "PT_").replace("TF:", "TF_").replace(" ", "_")
+    return this.replace("s:", "")
+        .replace("q:", "")
+        .replace("PT:", "PT_")
+        .replace("TF:", "TF_")
+        .replace(" ", "_")
 }
 
 suspend fun initializeCamera(

@@ -12,9 +12,6 @@ abstract class InferenceModel {
 }
 
 abstract class InferenceResult()
-data class ObjectDetectionResult(
-    val x: String
-) : InferenceResult()
 
 data class ClassificationResult(
     val name: String

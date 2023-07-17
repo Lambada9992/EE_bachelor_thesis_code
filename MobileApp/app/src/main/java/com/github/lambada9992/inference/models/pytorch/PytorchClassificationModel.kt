@@ -7,7 +7,6 @@ import com.github.lambada9992.constants.CLASSES
 import com.github.lambada9992.inference.models.ClassificationResult
 import com.github.lambada9992.inference.models.InferenceModel
 import com.github.lambada9992.inference.models.InferenceResult
-import org.pytorch.Device
 import org.pytorch.IValue
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
@@ -19,7 +18,6 @@ class PytorchClassificationModel(
     private val path: String,
     private val imageSize: Int,
     private val classes: Array<String> = CLASSES.IMAGE_NET,
-    private val device: Device = Device.CPU
 ) : InferenceModel() {
     private var module: Module? = null
     private val lock = Any()
@@ -28,10 +26,7 @@ class PytorchClassificationModel(
         synchronized(lock) {
             Log.i("PytorchClassificationModel", "Initialing model name: $name")
             if (module == null) {
-//                LiteModuleLoader.load()
-//                module = LiteModuleLoader.loadModuleFromAsset(context.assets, path, device)
                 try {
-
                     module = LiteModuleLoader.load(path)
                 } catch (e: Exception) {
                     errorMessage = e.message
