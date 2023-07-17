@@ -17,14 +17,6 @@ fun InferenceVisualization(inferenceService: InferenceService) {
     val classificationText by inferenceService.classificationResult.observeAsState("")
 
     Box(modifier = Modifier.fillMaxSize()) {
-//        Canvas(modifier =  Modifier.fillMaxSize()) {
-//            drawRect(
-//                color = Color.Blue,
-//                size = Size(600f, 250f),
-//                topLeft = Offset(100f, 700f),
-//                style = Stroke(8.dp.toPx())
-//            )
-//        }
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
