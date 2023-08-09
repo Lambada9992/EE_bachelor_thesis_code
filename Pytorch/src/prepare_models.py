@@ -1,3 +1,4 @@
+import copy
 import torch
 import os
 import torchvision
@@ -59,7 +60,7 @@ def process_model(
 
         print(f"Processing {name} with sparse {sparse} and quantization {quantization}")
 
-        _model = model
+        _model = copy.deepcopy(model)
 
         if sparse is not None:
             _model = prune_model.prune_model(_model, sparse)
