@@ -16,7 +16,7 @@ def prepare_data_loader():
 
 
 # student
-model_config = "mobilenet_v2_config.py"
+model_config = "mmrazor_configs/mobilenet_v2_config.py"
 model_path = "output/kd_mobilenetv2_epoch_55.pth"
 
 student = init_model(model_config)
@@ -35,7 +35,7 @@ print(f"Accuracy: {eval_model.evaluate_accuracy(student, prepare_data_loader())}
 
 
 # teacher
-teacher = init_model("densenet201_config.py", 'https://download.openmmlab.com/mmclassification/v0/densenet/densenet201_4xb256_in1k_20220426-05cae4ef.pth')
+teacher = init_model("mmrazor_configs/densenet201_config.py", 'https://download.openmmlab.com/mmclassification/v0/densenet/densenet201_4xb256_in1k_20220426-05cae4ef.pth')
 teacher_save_path = "output/kd_densenet201.ptl"
 convert_utils.save_as_ptl(teacher_save_path, teacher, torch.rand(1, 3, 224, 224))
 
