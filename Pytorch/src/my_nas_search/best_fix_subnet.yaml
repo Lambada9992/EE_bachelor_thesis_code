@@ -1,0 +1,44 @@
+architecture.backbone.layer1.0:
+  chosen: mb_k3e1
+architecture.backbone.layer2.0:
+  chosen: mb_k3e3
+architecture.backbone.layer2.1:
+  chosen: identity
+architecture.backbone.layer2.2:
+  chosen: mb_k5e3
+architecture.backbone.layer2.3:
+  chosen: mb_k3e3
+architecture.backbone.layer3.0:
+  chosen: mb_k5e3
+architecture.backbone.layer3.1:
+  chosen: mb_k5e3
+architecture.backbone.layer3.2:
+  chosen: mb_k3e3
+architecture.backbone.layer3.3:
+  chosen: identity
+architecture.backbone.layer4.0:
+  chosen: mb_k7e6
+architecture.backbone.layer4.1:
+  chosen: mb_k3e3
+architecture.backbone.layer4.2:
+  chosen: identity
+architecture.backbone.layer4.3:
+  chosen: mb_k7e3
+architecture.backbone.layer5.0:
+  chosen: mb_k7e3
+architecture.backbone.layer5.1:
+  chosen: mb_k5e3
+architecture.backbone.layer5.2:
+  chosen: identity
+architecture.backbone.layer5.3:
+  chosen: mb_k3e3
+architecture.backbone.layer6.0:
+  chosen: mb_k7e6
+architecture.backbone.layer6.1:
+  chosen: identity
+architecture.backbone.layer6.2:
+  chosen: mb_k7e3
+architecture.backbone.layer6.3:
+  chosen: mb_k3e3
+architecture.backbone.layer7.0:
+  chosen: mb_k7e6
