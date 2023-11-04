@@ -16,7 +16,7 @@ def prepare_data_loader():
 
 
 config_path =  "mmrazor_configs/spos/spos_mobilenet_subnet_8xb128_in1k.py"
-model_path = "my_nas_subnet/epoch_24.pth"
+model_path = "my_nas_subnet/epoch_63.pth"
 
 student = init_model(config_path, model_path)
 
